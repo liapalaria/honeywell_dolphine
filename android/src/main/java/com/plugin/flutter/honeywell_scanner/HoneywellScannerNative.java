@@ -58,8 +58,16 @@ public class HoneywellScannerNative extends HoneywellScanner implements AidcMana
                 scanner.setProperty(BarcodeReader.PROPERTY_TRIGGER_CONTROL_MODE,
                         BarcodeReader.TRIGGER_CONTROL_MODE_AUTO_CONTROL);
                 scanner.setProperty(BarcodeReader.PROPERTY_DATA_PROCESSOR_LAUNCH_BROWSER, false);
+                scanner.setProperty(BarcodeReader.PROPERTY_CODE_39_MAXIMUM_LENGTH,
+                        20);
+                scanner.setProperty(BarcodeReader.PROPERTY_UPC_A_CHECK_DIGIT_TRANSMIT_ENABLED, true);
+                scanner.setProperty(BarcodeReader.PROPERTY_UPC_E_CHECK_DIGIT_TRANSMIT_ENABLED, true);
+                scanner.setProperty(BarcodeReader.PROPERTY_EAN_13_CHECK_DIGIT_TRANSMIT_ENABLED, true);
+
+                Log.d("Scanner","Set properties: " + scanner.getAllProperties());
             } catch (UnsupportedPropertyException e) {
                 onError(e);
+                Log.d("Scanner","Error");
             }
             // register trigger state change listener
             // When using Automatic Trigger control do not need to implement the onTriggerEvent
@@ -67,11 +75,11 @@ public class HoneywellScannerNative extends HoneywellScanner implements AidcMana
 
             if (properties != null) scanner.setProperties(properties);
 
-            if (scanner.loadProfile("com.tractorsupply.mobileScanner")) {
-                Log.d("Scanner", "Profile set successfully");
-            } else {
-                Log.d("Scanner", "Error setting profile");
-            }
+//            if (scanner.loadProfile("com.tractorsupply.mobileScanner")) {
+//                Log.d("Scanner", "Profile set successfully");
+//            } else {
+//                Log.d("Scanner", "Error setting profile");
+//            }
             initialized = true;
             initializing = false;
             if (pendingResume) resumeScanner();
