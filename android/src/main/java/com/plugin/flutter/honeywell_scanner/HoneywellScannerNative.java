@@ -1,12 +1,15 @@
 package com.plugin.flutter.honeywell_scanner;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.honeywell.aidc.AidcManager;
 import com.honeywell.aidc.BarcodeFailureEvent;
 import com.honeywell.aidc.BarcodeReadEvent;
 import com.honeywell.aidc.BarcodeReader;
 import com.honeywell.aidc.InvalidScannerNameException;
 import com.honeywell.aidc.UnsupportedPropertyException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,8 +25,7 @@ public class HoneywellScannerNative extends HoneywellScanner implements AidcMana
     private transient BarcodeReader scanner;
     private transient Map<String, Object> properties;
 
-    public HoneywellScannerNative(Context context)
-    {
+    public HoneywellScannerNative(Context context) {
         super(context);
         pendingResume = false;
         initialized = false;
@@ -31,20 +33,20 @@ public class HoneywellScannerNative extends HoneywellScanner implements AidcMana
         supported = false;
         init();
     }
-    
-    @Override
-    public boolean isSupported() { return supported; }
 
-    private void init()
-    {
+    @Override
+    public boolean isSupported() {
+        return supported;
+    }
+
+    private void init() {
         initializing = true;
         AidcManager.create(context, this);
     }
 
     @Override
-    public void onCreated(AidcManager aidcManager)
-    {
-        try{
+    public void onCreated(AidcManager aidcManager) {
+        try {
             supported = true;
             scannerManager = aidcManager;
             scanner = scannerManager.createBarcodeReader();
@@ -63,30 +65,33 @@ public class HoneywellScannerNative extends HoneywellScanner implements AidcMana
             // When using Automatic Trigger control do not need to implement the onTriggerEvent
             // function scanner.addTriggerListener(this);
 
-            if(properties != null) scanner.setProperties(properties);
+            if (properties != null) scanner.setProperties(properties);
+
+            if (scanner.loadProfile("com.tractorsupply.mobileScanner")) {
+                Log.d("Scanner", "Profile set successfully");
+            } else {
+                Log.d("Scanner", "Error setting profile");
+            }
             initialized = true;
             initializing = false;
-            if(pendingResume) resumeScanner();
-        }
-        catch (InvalidScannerNameException e){
+            if (pendingResume) resumeScanner();
+        } catch (InvalidScannerNameException e) {
             onError(e);
         }
     }
 
     @Override
-    public void onBarcodeEvent(BarcodeReadEvent barcodeReadEvent)
-    {
-        if(barcodeReadEvent != null) onDecoded(barcodeReadEvent.getBarcodeData());
+    public void onBarcodeEvent(BarcodeReadEvent barcodeReadEvent) {
+        if (barcodeReadEvent != null) onDecoded(barcodeReadEvent.getBarcodeData());
     }
 
     @Override
-    public void onFailureEvent(BarcodeFailureEvent barcodeFailureEvent)
-    {
+    public void onFailureEvent(BarcodeFailureEvent barcodeFailureEvent) {
         //Do nothing with unrecognized code due to an incomplete scanning
 //        if(barcodeFailureEvent != null) onError(new Exception(barcodeFailureEvent.toString()));
     }
 
-    private void initProperties(){
+    private void initProperties() {
         properties = new HashMap<>();
         properties.put(BarcodeReader.PROPERTY_AZTEC_ENABLED, true);
         properties.put(BarcodeReader.PROPERTY_CODABAR_ENABLED, true);
@@ -106,24 +111,21 @@ public class HoneywellScannerNative extends HoneywellScanner implements AidcMana
     }
 
     @Override
-    public void setProperties(Map<String, Object> mapProperties)
-    {
-        if(mapProperties == null) return;
+    public void setProperties(Map<String, Object> mapProperties) {
+        if (mapProperties == null) return;
         initProperties();
         properties.putAll(mapProperties);
-        if(scanner != null) scanner.setProperties(properties);
+        if (scanner != null) scanner.setProperties(properties);
     }
 
     @Override
-    public boolean resumeScanner()
-    {
+    public boolean resumeScanner() {
         startScanner();
         return true;
     }
 
     @Override
-    public boolean pauseScanner()
-    {
+    public boolean pauseScanner() {
         if (scanner != null) {
             // release the scanner claim so we don't get any scanner notifications while paused
             // and the scanner properties are restored to default.
@@ -134,9 +136,8 @@ public class HoneywellScannerNative extends HoneywellScanner implements AidcMana
     }
 
     @Override
-    public boolean startScanner()
-    {
-        if (scanner != null){
+    public boolean startScanner() {
+        if (scanner != null) {
             try {
                 scanner.claim();
             } catch (Exception e) {
@@ -145,17 +146,15 @@ public class HoneywellScannerNative extends HoneywellScanner implements AidcMana
             }
         } else {
             pendingResume = true;
-            if(!initialized && !initializing) init();
+            if (!initialized && !initializing) init();
         }
         return true;
     }
 
     @Override
-    public boolean stopScanner()
-    {
+    public boolean stopScanner() {
         pendingResume = false;
-        try
-        {
+        try {
             if (scanner != null) {
                 // unregister barcode event listener
                 scanner.removeBarcodeListener(this);
@@ -172,23 +171,18 @@ public class HoneywellScannerNative extends HoneywellScanner implements AidcMana
                 scanner.close();
                 scanner = null;
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        try
-        {
+        try {
             if (scannerManager != null) {
                 // close AidcManager to disconnect from the scanner service.
                 // once closed, the object can no longer be used.
                 scannerManager.close();
                 scannerManager = null;
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         initialized = false;
