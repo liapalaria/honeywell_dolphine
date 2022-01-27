@@ -63,6 +63,7 @@ public class HoneywellScannerNative extends HoneywellScanner implements AidcMana
                 scanner.setProperty(BarcodeReader.PROPERTY_UPC_A_CHECK_DIGIT_TRANSMIT_ENABLED, true);
                 scanner.setProperty(BarcodeReader.PROPERTY_UPC_E_CHECK_DIGIT_TRANSMIT_ENABLED, true);
                 scanner.setProperty(BarcodeReader.PROPERTY_EAN_13_CHECK_DIGIT_TRANSMIT_ENABLED, true);
+                scanner.setProperty(BarcodeReader.PROPERTY_EAN_8_CHECK_DIGIT_TRANSMIT_ENABLED, true);
 
                 Log.d("Scanner","Set properties: " + scanner.getAllProperties());
             } catch (UnsupportedPropertyException e) {

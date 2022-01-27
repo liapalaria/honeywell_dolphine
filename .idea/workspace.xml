@@ -31,11 +31,8 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8afd1be9-2a49-4949-ab7d-9ed0e35ab749" name="Default" comment="111">
-      <change afterPath="$PROJECT_DIR$/android/honeywell/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/honeywell/honeywell.aar" afterDir="false" />
+    <list default="true" id="8afd1be9-2a49-4949-ab7d-9ed0e35ab749" name="Default" comment="added check digit properties">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/plugin/flutter/honeywell_scanner/HoneywellScannerNative.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/plugin/flutter/honeywell_scanner/HoneywellScannerNative.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -382,7 +379,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627490969545</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="added check digit properties">
+      <created>1632245370804</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1632245370804</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -454,6 +458,7 @@
     <MESSAGE value="- Android gradle plugin updated&#10;- Android compileSdkVersion updated" />
     <MESSAGE value="- Example android gradle confs updated" />
     <MESSAGE value="- `Future&lt;bool&gt; isSupported()` validation added to avoid platform plugin exceptions on any other platform different than Android.&#10;- `Future&lt;bool&gt; isSupported()` function added to know if running device is supported by honeywell scanner." />
-    <option name="LAST_COMMIT_MESSAGE" value="- `Future&lt;bool&gt; isSupported()` validation added to avoid platform plugin exceptions on any other platform different than Android.&#10;- `Future&lt;bool&gt; isSupported()` function added to know if running device is supported by honeywell scanner." />
+    <MESSAGE value="added check digit properties" />
+    <option name="LAST_COMMIT_MESSAGE" value="added check digit properties" />
   </component>
 </project>
